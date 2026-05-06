@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>LifeCapsule Atlas – Fresques de souvenirs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon 🌿 en SVG inline -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='48'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
     <style>
         :root {
             --bg: #f3f7f3;
@@ -25,6 +27,63 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background: radial-gradient(circle at top left, #e6f5ea 0, #f3f7f3 40%, #e9f2ff 100%);
             color: var(--text);
+        }
+
+        body.high-contrast {
+            background: #000;
+            color: #fff;
+        }
+
+        body.high-contrast .card {
+            background: #000;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        body.high-contrast .fresque-wrapper {
+            background: #000 !important;
+            color: #fff !important;
+            border-color: #fff;
+        }
+
+        body.high-contrast input,
+        body.high-contrast textarea,
+        body.high-contrast select {
+            background: #111;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        body.high-contrast .btn-primary {
+            background: #fff;
+            color: #000;
+            box-shadow: none;
+        }
+
+        body.high-contrast .btn-secondary {
+            background: #222;
+            color: #fff;
+        }
+
+        body.high-contrast .pill,
+        body.high-contrast .guided-step,
+        body.high-contrast .item-chip {
+            background: #111;
+            border-color: #fff;
+            color: #fff;
+        }
+
+        body.font-classic {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body.font-large {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 18px;
+        }
+
+        body.font-hand {
+            font-family: "Segoe Print", "Comic Sans MS", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .page {
@@ -74,6 +133,13 @@
             color: var(--muted);
         }
 
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
         .bmc-wrapper {
             display: flex;
             flex-direction: column;
@@ -110,13 +176,39 @@
             font-weight: 600;
         }
 
+        .header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .header-btn {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #c3d7c8;
+            background: #f4faf5;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .header-btn:hover {
+            background: #e4f2e7;
+        }
+
         @media (max-width: 880px) {
             header {
                 flex-direction: column;
                 align-items: flex-start;
             }
+            .header-right {
+                align-items: flex-start;
+            }
             .bmc-wrapper {
-                align-self: flex-start;
+                align-items: flex-start;
+            }
+            .header-controls {
+                justify-content: flex-start;
             }
         }
 
@@ -249,7 +341,8 @@
         input[type="text"],
         input[type="date"],
         textarea,
-        input[type="url"] {
+        input[type="url"],
+        select {
             width: 100%;
             padding: 7px 9px;
             border-radius: 9px;
@@ -270,7 +363,8 @@
         }
 
         input:focus,
-        textarea:focus {
+        textarea:focus,
+        select:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 1px rgba(60,140,90,0.25);
             background: #ffffff;
@@ -493,11 +587,98 @@
             text-align: center;
         }
 
+        .export-note {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .font-select {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #f4faf5;
+        }
+
+        .about-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .about-overlay.active {
+            display: flex;
+        }
+
+        .about-card {
+            background: #ffffff;
+            color: #243127;
+            border-radius: 16px;
+            padding: 18px 18px 16px;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+            border: 1px solid #e0ebdf;
+        }
+
+        body.high-contrast .about-card {
+            background: #000;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .about-card h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .about-card p {
+            margin: 4px 0;
+            font-size: 13px;
+        }
+
+        .about-card-footer {
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .about-close-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .about-close-btn {
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #f4faf5;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
         @media print {
             body {
                 background: #ffffff;
             }
-            header, .bmc-wrapper, .footer-note, .btn-row, .items-list, .form-group, .pill-row, .mode-toggle, .guided-step {
+            header,
+            .footer-note,
+            .btn-row,
+            .items-list,
+            .form-group,
+            .pill-row,
+            .mode-toggle,
+            .guided-step,
+            .header-controls,
+            .bmc-wrapper,
+            .export-note {
                 display: none !important;
             }
             main {
@@ -517,7 +698,7 @@
         }
     </style>
 </head>
-<body>
+<body class="font-classic">
 <div class="page">
     <header>
         <div class="brand">
@@ -530,12 +711,23 @@
             </div>
         </div>
 
-        <div class="bmc-wrapper">
-            <div class="bmc-note">Chaque don est offert à <strong>TheCoffeeCoder</strong></div>
-            <a class="bmc-link" href="https://www.buymeacoffee.com/chachatgamer" target="_blank" rel="noopener" title="Votre don sera offert à TheCoffeeCoder">
-                <span>☕</span>
-                <span>Offrir un café</span>
-            </a>
+        <div class="header-right">
+            <div class="header-controls">
+                <button id="contrast-toggle" class="header-btn" type="button">Contraste élevé</button>
+                <select id="font-select" class="font-select">
+                    <option value="classic">Police classique</option>
+                    <option value="large">Grande lisibilité</option>
+                    <option value="hand">Manuscrite douce</option>
+                </select>
+                <button id="about-btn" class="header-btn" type="button">À propos</button>
+            </div>
+            <div class="bmc-wrapper">
+                <div class="bmc-note">Chaque don est offert à <strong>TheCoffeeCoder</strong></div>
+                <a class="bmc-link" href="https://www.buymeacoffee.com/chachatgamer" target="_blank" rel="noopener" title="Votre don sera offert à TheCoffeeCoder">
+                    <span>☕</span>
+                    <span>Offrir un café</span>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -562,49 +754,46 @@
 
             <div class="mode-toggle">
                 <span>Mode :</span>
-                <button id="mode-guided
--guided-btn" class="active">Guidé</button>
-                <button id="mode-free-btn">Libre</button>
+                <button id="mode-guided-btn" class="active" type="button">Guidé</button>
+                <button id="mode-free-btn" type="button">Libre</button>
             </div>
 
-            <!-- Mode guidé -->
             <div id="guided-mode">
                 <div class="guided-step">
                     <div class="guided-step-title">Étape 1 — Pour qui est cette fresque ?</div>
                     <div class="guided-options" id="guided-for">
-                        <button class="guided-option-btn">Pour un membre de ma famille</button>
-                        <button class="guided-option-btn">Pour un ami</button>
-                        <button class="guided-option-btn">Pour un couple</button>
-                        <button class="guided-option-btn">Pour un groupe</button>
-                        <button class="guided-option-btn">Pour moi-même</button>
+                        <button class="guided-option-btn" type="button">Pour un membre de ma famille</button>
+                        <button class="guided-option-btn" type="button">Pour un ami</button>
+                        <button class="guided-option-btn" type="button">Pour un couple</button>
+                        <button class="guided-option-btn" type="button">Pour un groupe</button>
+                        <button class="guided-option-btn" type="button">Pour moi-même</button>
                     </div>
                 </div>
 
                 <div class="guided-step">
                     <div class="guided-step-title">Étape 2 — Quel ton veux-tu donner ?</div>
                     <div class="guided-options" id="guided-tone">
-                        <button class="guided-option-btn">Joyeux</button>
-                        <button class="guided-option-btn">Émouvant</button>
-                        <button class="guided-option-btn">Nostalgique</button>
-                        <button class="guided-option-btn">Humoristique</button>
-                        <button class="guided-option-btn">Un peu de tout</button>
+                        <button class="guided-option-btn" type="button">Joyeux</button>
+                        <button class="guided-option-btn" type="button">Émouvant</button>
+                        <button class="guided-option-btn" type="button">Nostalgique</button>
+                        <button class="guided-option-btn" type="button">Humoristique</button>
+                        <button class="guided-option-btn" type="button">Un peu de tout</button>
                     </div>
                 </div>
 
                 <div class="guided-step">
                     <div class="guided-step-title">Étape 3 — Quels types de souvenirs veux-tu ajouter ?</div>
                     <div class="guided-options" id="guided-types">
-                        <button class="guided-option-btn">Photos</button>
-                        <button class="guided-option-btn">Messages</button>
-                        <button class="guided-option-btn">Liens de vidéos</button>
-                        <button class="guided-option-btn">Dates importantes</button>
-                        <button class="guided-option-btn">Petites anecdotes</button>
+                        <button class="guided-option-btn" type="button">Photos</button>
+                        <button class="guided-option-btn" type="button">Messages</button>
+                        <button class="guided-option-btn" type="button">Liens de vidéos</button>
+                        <button class="guided-option-btn" type="button">Dates importantes</button>
+                        <button class="guided-option-btn" type="button">Petites anecdotes</button>
                     </div>
                     <div class="small-hint">Tu pourras toujours changer d'avis ensuite.</div>
                 </div>
             </div>
 
-            <!-- Mode libre / commun -->
             <div id="common-form">
                 <div class="form-group">
                     <label for="fresque-title">Titre de la fresque</label>
@@ -622,9 +811,9 @@
                 <p class="small-hint">Ajoute des photos, des messages ou des liens de vidéos. L'application les organisera dans la fresque.</p>
 
                 <div class="type-row">
-                    <button class="type-btn active" data-type="photo">📷 Photo</button>
-                    <button class="type-btn" data-type="message">💬 Message</button>
-                    <button class="type-btn" data-type="video">🎞️ Lien vidéo</button>
+                    <button class="type-btn active" data-type="photo" type="button">📷 Photo</button>
+                    <button class="type-btn" data-type="message" type="button">💬 Message</button>
+                    <button class="type-btn" data-type="video" type="button">🎞️ Lien vidéo</button>
                 </div>
 
                 <div class="form-group">
@@ -654,8 +843,8 @@
                 </div>
 
                 <div class="btn-row">
-                    <button class="btn btn-primary" id="add-item-btn">Ajouter à la fresque</button>
-                    <button class="btn btn-ghost" id="clear-form-btn">Effacer le formulaire</button>
+                    <button class="btn btn-primary" id="add-item-btn" type="button">Ajouter à la fresque</button>
+                    <button class="btn btn-ghost" id="clear-form-btn" type="button">Effacer le formulaire</button>
                 </div>
 
                 <div class="items-list" id="items-list"></div>
@@ -676,7 +865,7 @@
                 </div>
 
                 <div class="btn-row">
-                    <button class="btn btn-secondary" id="generate-btn">2. Générer la fresque</button>
+                    <button class="btn btn-secondary" id="generate-btn" type="button">2. Générer la fresque</button>
                 </div>
             </div>
         </section>
@@ -685,13 +874,15 @@
             <div class="preview-header">
                 <div>
                     <h2>2. Aperçu de ta fresque</h2>
-                    <p>Quand tu es satisfait, tu peux l'imprimer en PDF ou la partager.</p>
+                    <p>Quand tu es satisfait, tu peux l'imprimer en PDF, l'exporter en image ou la partager.</p>
                 </div>
-                <select class="theme-select" id="theme-select">
-                    <option value="nature">Thème nature</option>
-                    <option value="soft">Thème doux</option>
-                    <option value="night">Thème nuit</option>
-                </select>
+                <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+                    <select class="theme-select" id="theme-select">
+                        <option value="nature">Thème nature</option>
+                        <option value="soft">Thème doux</option>
+                        <option value="night">Thème nuit</option>
+                    </select>
+                </div>
             </div>
 
             <div class="fresque-wrapper" id="fresque-wrapper">
@@ -702,19 +893,40 @@
             </div>
 
             <div class="btn-row" style="margin-top:12px;">
-                <button class="btn btn-primary" id="print-btn">Imprimer / PDF</button>
-                <button class="btn btn-secondary" id="reset-btn">Tout recommencer</button>
+                <button class="btn btn-primary" id="print-btn" type="button">Imprimer / PDF</button>
+                <button class="btn btn-secondary" id="export-png-btn" type="button">Exporter en image (PNG)</button>
+                <button class="btn btn-secondary" id="reset-btn" type="button">Tout recommencer</button>
             </div>
 
             <div class="footer-note">
                 Astuce : après génération, tu peux utiliser “Imprimer” pour créer un PDF et l'envoyer par mail ou messagerie.
             </div>
+            <div class="export-note">
+                L'export en image crée une capture nette de la fresque, pratique pour l'envoyer par message.
+            </div>
         </section>
     </main>
 </div>
 
+<div class="about-overlay" id="about-overlay">
+    <div class="about-card">
+        <h3>À propos de LifeCapsule Atlas</h3>
+        <p>LifeCapsule Atlas est un outil simple pour créer des fresques de souvenirs avec photos, messages et liens de vidéos.</p>
+        <p>Tout se fait sur ton appareil, sans compte ni cloud. Tu peux l'utiliser pour un anniversaire, une famille, une amitié, une année entière…</p>
+        <p><strong>Créé avec 🌿 par chachatgamer &amp; TheCoffeeCoder</strong></p>
+        <div class="about-card-footer">
+            Tu peux imprimer ta fresque, l'exporter en image ou simplement la garder comme capsule de souvenirs.
+        </div>
+        <div class="about-close-row">
+            <button class="about-close-btn" id="about-close-btn" type="button">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- html2canvas pour l'export PNG -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script>
-    // Signature du projet
     // Créé avec 🌿 par chachatgamer & TheCoffeeCoder
 
     (function() {
@@ -757,9 +969,19 @@
 
         const printBtn = document.getElementById('print-btn');
         const resetBtn = document.getElementById('reset-btn');
+        const exportPngBtn = document.getElementById('export-png-btn');
+
+        const contrastToggle = document.getElementById('contrast-toggle');
+        const fontSelect = document.getElementById('font-select');
+
+        const aboutBtn = document.getElementById('about-btn');
+        const aboutOverlay = document.getElementById('about-overlay');
+        const aboutCloseBtn = document.getElementById('about-close-btn');
 
         let currentType = 'photo';
         let items = [];
+
+        const STORAGE_KEY = 'lifecapsule_atlas_state_v1';
 
         function setModeGuided(active) {
             if (active) {
@@ -771,6 +993,7 @@
                 modeFreeBtn.classList.add('active');
                 guidedMode.style.display = 'none';
             }
+            saveState();
         }
 
         modeGuidedBtn.addEventListener('click', function() {
@@ -781,8 +1004,6 @@
             setModeGuided(false);
         });
 
-        setModeGuided(true);
-
         function setupGuidedGroup(container, onSelect) {
             const buttons = container.querySelectorAll('.guided-option-btn');
             buttons.forEach(function(btn) {
@@ -790,6 +1011,7 @@
                     buttons.forEach(function(b) { b.classList.remove('selected'); });
                     btn.classList.add('selected');
                     if (onSelect) onSelect(btn.textContent.trim());
+                    saveState();
                 });
             });
         }
@@ -808,6 +1030,7 @@
                     fresqueTitleInput.value = 'Ma fresque de souvenirs';
                 }
             }
+            renderFresque();
         });
 
         setupGuidedGroup(guidedTone, function(text) {
@@ -824,6 +1047,7 @@
                     fresqueSubtitleInput.value = 'Un mélange de rires, d’émotions et de beaux souvenirs.';
                 }
             }
+            renderFresque();
         });
 
         setupGuidedGroup(guidedTypes, function(text) {
@@ -841,6 +1065,7 @@
                     b.classList.add('active');
                 }
             });
+            saveState();
         });
 
         function updateTypeVisibility() {
@@ -855,6 +1080,7 @@
                 btn.classList.add('active');
                 currentType = btn.getAttribute('data-type') || 'photo';
                 updateTypeVisibility();
+                saveState();
             });
         });
 
@@ -895,6 +1121,7 @@
                     items.splice(index, 1);
                     renderItemsList();
                     renderFresque();
+                    saveState();
                 });
                 div.appendChild(label);
                 div.appendChild(removeBtn);
@@ -934,6 +1161,7 @@
                     renderItemsList();
                     renderFresque();
                     clearForm();
+                    saveState();
                 };
                 reader.readAsDataURL(file);
             } else if (currentType === 'message') {
@@ -951,6 +1179,7 @@
                 renderItemsList();
                 renderFresque();
                 clearForm();
+                saveState();
             } else if (currentType === 'video') {
                 const url = itemVideo.value.trim();
                 if (!url) {
@@ -966,6 +1195,7 @@
                 renderItemsList();
                 renderFresque();
                 clearForm();
+                saveState();
             }
         });
 
@@ -985,9 +1215,253 @@
 
         themeSelect.addEventListener('change', function() {
             applyTheme();
+            saveState();
         });
 
         function renderFresque() {
             fresqueGrid.innerHTML = '';
             const title = fresqueTitleInput.value.trim() || "Ta fresque de souvenirs";
-            const subtitle = fresqueSubtitleInput.value.trim() || "Ajoute des moments à
+            const subtitle = fresqueSubtitleInput.value.trim() || "Ajoute des moments à gauche, puis génère ta fresque.";
+            previewTitle.textContent = title;
+            previewSubtitle.textContent = subtitle;
+
+            items.forEach(function(item) {
+                const card = document.createElement('div');
+                card.className = 'fresque-item';
+
+                const tag = document.createElement('div');
+                tag.className = 'fresque-item-tag';
+                if (item.type === 'photo') {
+                    tag.textContent = 'Photo';
+                } else if (item.type === 'message') {
+                    tag.textContent = 'Message';
+                } else if (item.type === 'video') {
+                    tag.textContent = 'Vidéo';
+                }
+                card.appendChild(tag);
+
+                if (item.date) {
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'fresque-item-date';
+                    dateEl.textContent = item.date;
+                    card.appendChild(dateEl);
+                }
+
+                if (item.type === 'photo' && item.src) {
+                    const media = document.createElement('div');
+                    media.className = 'fresque-item-media';
+                    const img = document.createElement('img');
+                    img.src = item.src;
+                    img.alt = 'Photo de la fresque';
+                    media.appendChild(img);
+                    card.appendChild(media);
+                }
+
+                if (item.type === 'message' && item.text) {
+                    const textEl = document.createElement('div');
+                    textEl.className = 'fresque-item-text';
+                    textEl.textContent = item.text;
+                    card.appendChild(textEl);
+                }
+
+                if (item.type === 'video' && item.url) {
+                    const link = document.createElement('a');
+                    link.className = 'fresque-item-link';
+                    link.href = item.url;
+                    link.target = '_blank';
+                    link.rel = 'noopener';
+                    link.textContent = item.url;
+                    card.appendChild(link);
+                }
+
+                if (item.author) {
+                    const authorEl = document.createElement('div');
+                    authorEl.className = 'fresque-item-date';
+                    authorEl.textContent = 'De la part de ' + item.author;
+                    card.appendChild(authorEl);
+                }
+
+                fresqueGrid.appendChild(card);
+            });
+
+            const capsuleText = capsuleMessageInput.value.trim();
+            const capsuleDate = capsuleDateInput.value;
+            if (capsuleText || capsuleDate) {
+                capsulePreview.style.display = 'block';
+                let text = '';
+                if (capsuleDate) {
+                    text += 'Pour ' + capsuleDate + ' : ';
+                }
+                text += capsuleText || 'Un message pour plus tard.';
+                capsulePreview.textContent = text;
+            } else {
+                capsulePreview.style.display = 'none';
+            }
+        }
+
+        generateBtn.addEventListener('click', function() {
+            renderFresque();
+            saveState();
+        });
+
+        printBtn.addEventListener('click', function() {
+            window.print();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            if (!confirm("Tout effacer et recommencer ?")) return;
+            fresqueTitleInput.value = '';
+            fresqueSubtitleInput.value = '';
+            capsuleMessageInput.value = '';
+            capsuleDateInput.value = '';
+            items = [];
+            renderItemsList();
+            renderFresque();
+            themeSelect.value = 'nature';
+            applyTheme();
+            localStorage.removeItem(STORAGE_KEY);
+        });
+
+        contrastToggle.addEventListener('click', function() {
+            document.body.classList.toggle('high-contrast');
+            saveState();
+        });
+
+        fontSelect.addEventListener('change', function() {
+            const value = fontSelect.value;
+            document.body.classList.remove('font-classic', 'font-large', 'font-hand');
+            if (value === 'classic') {
+                document.body.classList.add('font-classic');
+            } else if (value === 'large') {
+                document.body.classList.add('font-large');
+            } else if (value === 'hand') {
+                document.body.classList.add('font-hand');
+            }
+            saveState();
+        });
+
+        aboutBtn.addEventListener('click', function() {
+            aboutOverlay.classList.add('active');
+        });
+
+        aboutCloseBtn.addEventListener('click', function() {
+            aboutOverlay.classList.remove('active');
+        });
+
+        aboutOverlay.addEventListener('click', function(e) {
+            if (e.target === aboutOverlay) {
+                aboutOverlay.classList.remove('active');
+            }
+        });
+
+        function saveState() {
+            try {
+                const state = {
+                    title: fresqueTitleInput.value,
+                    subtitle: fresqueSubtitleInput.value,
+                    capsuleMessage: capsuleMessageInput.value,
+                    capsuleDate: capsuleDateInput.value,
+                    items: items,
+                    theme: themeSelect.value,
+                    highContrast: document.body.classList.contains('high-contrast'),
+                    font: fontSelect.value,
+                    guidedMode: guidedMode.style.display !== 'none'
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const state = JSON.parse(raw);
+                if (!state) return;
+
+                fresqueTitleInput.value = state.title || '';
+                fresqueSubtitleInput.value = state.subtitle || '';
+                capsuleMessageInput.value = state.capsuleMessage || '';
+                capsuleDateInput.value = state.capsuleDate || '';
+
+                items = Array.isArray(state.items) ? state.items : [];
+                renderItemsList();
+
+                if (state.theme) {
+                    themeSelect.value = state.theme;
+                    applyTheme();
+                } else {
+                    applyTheme();
+                }
+
+                if (state.highContrast) {
+                    document.body.classList.add('high-contrast');
+                } else {
+                    document.body.classList.remove('high-contrast');
+                }
+
+                if (state.font) {
+                    fontSelect.value = state.font;
+                    const value = state.font;
+                    document.body.classList.remove('font-classic', 'font-large', 'font-hand');
+                    if (value === 'classic') {
+                        document.body.classList.add('font-classic');
+                    } else if (value === 'large') {
+                        document.body.classList.add('font-large');
+                    } else if (value === 'hand') {
+                        document.body.classList.add('font-hand');
+                    }
+                }
+
+                if (typeof state.guidedMode === 'boolean') {
+                    setModeGuided(state.guidedMode);
+                } else {
+                    setModeGuided(true);
+                }
+
+                renderFresque();
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        [fresqueTitleInput, fresqueSubtitleInput, capsuleMessageInput, capsuleDateInput].forEach(function(el) {
+            el.addEventListener('input', function() {
+                renderFresque();
+                saveState();
+            });
+        });
+
+        exportPngBtn.addEventListener('click', function() {
+            if (typeof html2canvas === 'undefined') {
+                alert("L'export en image n'est pas disponible.");
+                return;
+            }
+            const target = fresqueWrapper;
+            const originalScroll = target.scrollTop;
+            target.scrollTop = 0;
+            html2canvas(target, {
+                backgroundColor: null,
+                scale: 2
+            }).then(function(canvas) {
+                target.scrollTop = originalScroll;
+                const link = document.createElement('a');
+                link.download = 'lifecapsule-fresque.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(function() {
+                target.scrollTop = originalScroll;
+                alert("Impossible de générer l'image. Réessaie avec un autre navigateur si le problème persiste.");
+            });
+        });
+
+        setModeGuided(true);
+        applyTheme();
+        renderItemsList();
+        renderFresque();
+        loadState();
+    })();
+</script>
+</body>
+</html>
