@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>LifeCapsule Atlas – Portfolio de souvenirs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon 🌿 en SVG inline -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='48'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #f3f7f3;
+            --bg-alt: #ffffff;
+            --accent: #3c8c5a;
+            --accent-soft: #d7f0df;
+            --accent-strong: #2f6f47;
+            --text: #243127;
+            --muted: #6c7a6f;
+            --border-radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #e6f5ea 0, #f3f7f3 40%, #e9f2ff 100%);
+            color: var(--text);
+        }
+
+        body.high-contrast {
+            background: #000;
+            color: #fff;
+        }
+
+        body.high-contrast .card {
+            background: #000;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        body.high-contrast .fresque-wrapper {
+            background: #000 !important;
+            color: #fff !important;
+            border-color: #fff;
+        }
+
+        body.high-contrast input,
+        body.high-contrast textarea,
+        body.high-contrast select {
+            background: #111;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        body.high-contrast .btn-primary {
+            background: #fff;
+            color: #000;
+            box-shadow: none;
+        }
+
+        body.high-contrast .btn-secondary {
+            background: #222;
+            color: #fff;
+        }
+
+        body.high-contrast .pill,
+        body.high-contrast .guided-step,
+        body.high-contrast .item-chip {
+            background: #111;
+            border-color: #fff;
+            color: #fff;
+        }
+
+        body.font-classic {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body.font-large {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 18px;
+        }
+
+        body.font-hand {
+            font-family: "Segoe Print", "Comic Sans MS", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 16px 40px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0, #b9e4c7 40%, #6fbf8b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .brand-logo span {
+            font-size: 24px;
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.03em;
+        }
+
+        .brand-text p {
+            margin: 3px 0 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .bmc-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .bmc-note {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        .bmc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #ffdd00;
+            color: #111;
+            font-size: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .bmc-link:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+        }
+
+        .bmc-link span {
+            font-weight: 600;
+        }
+
+        .header-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .header-btn {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #c3d7c8;
+            background: #f4faf5;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .header-btn:hover {
+            background: #e4f2e7;
+        }
+
+        @media (max-width: 880px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                align-items: flex-start;
+            }
+            .bmc-wrapper {
+                align-items: flex-start;
+            }
+            .header-controls {
+                justify-content: flex-start;
+            }
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.2fr);
+            gap: 18px;
+        }
+
+        @media (max-width: 880px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.96);
+            border-radius: var(--border-radius);
+            padding: 16px 16px 18px;
+            box-shadow: 0 14px 40px rgba(25, 40, 30, 0.12);
+            border: 1px solid rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .card p {
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .welcome-text {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .welcome-text p {
+            margin-bottom: 6px;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--text);
+            font-size: 11px;
+        }
+
+        .mode-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .mode-toggle button {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #c3d7c8;
+            background: #f4faf5;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .mode-toggle button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent-strong);
+        }
+
+        .guided-step {
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #f4faf5;
+            border: 1px solid #d7e4da;
+            font-size: 13px;
+        }
+
+        .guided-step-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .guided-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .guided-option-btn {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #ffffff;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .guided-option-btn.selected {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent-strong);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        input[type="url"],
+        select {
+            width: 100%;
+            padding: 7px 9px;
+            border-radius: 9px;
+            border: 1px solid #cfd9d1;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            background: #f9fcfa;
+        }
+
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            font-size: 12px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(60,140,90,0.25);
+            background: #ffffff;
+        }
+
+        .type-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .type-btn {
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #f4faf5;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .type-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent-strong);
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn {
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3c8c5a, #6fbf8b);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(60,140,90,0.35);
+        }
+
+        .btn-secondary {
+            background: #e7f3ea;
+            color: var(--text);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(60,140,90,0.3);
+        }
+
+        .small-hint {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .items-list {
+            margin-top: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .item-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 9px;
+            border-radius: 10px;
+            background: #f4faf5;
+            border: 1px solid #d7e4da;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .item-chip span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-chip button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .preview-header h2 {
+            margin: 0;
+        }
+
+        .theme-select {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #f4faf5;
+        }
+
+        .fresque-wrapper {
+            border-radius: 16px;
+            background: linear-gradient(145deg, #fdfefc, #eef7f0);
+            border: 1px solid #dbe7dd;
+            padding: 14px;
+            max-height: 520px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .fresque-title {
+            text-align: center;
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .fresque-subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .fresque-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .fresque-item {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid #e0ebdf;
+            box-shadow: 0 6px 14px rgba(25,40,30,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+        }
+
+        .fresque-item-tag {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: #f4faf5;
+            color: var(--muted);
+        }
+
+        .fresque-item-date {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .fresque-item-text {
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .fresque-item-media {
+            border-radius: 9px;
+            overflow: hidden;
+            max-height: 160px;
+        }
+
+        .fresque-item-media img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .fresque-item-link {
+            font-size: 11px;
+            color: #2f6f9c;
+            word-break: break-all;
+        }
+
+        .capsule-note {
+            margin-top: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #fff7e0;
+            border: 1px dashed #e0b85a;
+            font-size: 12px;
+        }
+
+        .footer-note {
+            margin-top: 14px;
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .export-note {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .font-select {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid #cfd9d1;
+            background: #f4faf5;
+        }
+
+        .about-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .about-overlay.active {
+            display: flex;
+        }
+
+        .about-card {
+            max-width: 420px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px 18px 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+            font-size: 13px;
+        }
+
+        .about-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .about-card p {
+            margin: 0 0 8px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .about-card-footer {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .about-close-row {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .about-close-btn {
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: none;
+            background: #e7f3ea;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .about-close-btn:hover {
+            background: #d7e8dd;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <span>🌿</span>
+            </div>
+            <div class="brand-text">
+                <h1>LifeCapsule Atlas</h1>
+                <p>Crée un portfolio de souvenirs avec photos, messages et liens de vidéos.</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="bmc-wrapper">
+                <div class="bmc-note">Tu l'utilises pour un moment important ? Merci d'en prendre soin 💚</div>
+                <a class="bmc-link" href="https://www.buymeacoffee.com/thecoffeecoder" target="_blank" rel="noopener">
+                    <span>☕</span><span>Offrir un café</span>
+                </a>
+            </div>
+            <div class="header-controls">
+                <button class="header-btn" id="contrast-toggle" type="button">Contraste élevé</button>
+                <select class="font-select" id="font-select">
+                    <option value="classic">Police classique</option>
+                    <option value="large">Police plus grande</option>
+                    <option value="hand">Style manuscrit</option>
+                </select>
+                <button class="header-btn" id="about-btn" type="button">À propos</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>1. Préparer ton portfolio</h2>
+            <p>Ajoute des éléments (photos, messages, liens de vidéos) et personnalise le titre et le ton de ton portfolio.</p>
+
+            <div class="welcome-text">
+                <p>Tu peux l'utiliser pour un anniversaire, une surprise, un cadeau de départ, une année de souvenirs, une amitié, une famille…</p>
+                <p>Tout reste sur ton appareil. Tu peux ensuite imprimer ton portfolio, l'exporter en image ou le garder comme capsule de souvenirs.</p>
+            </div>
+
+            <div class="pill-row">
+                <div class="pill">🎁 Idéal pour un cadeau personnalisé</div>
+                <div class="pill">📷 Photos + 💬 messages + 🎞️ liens vidéos</div>
+                <div class="pill">🖨️ Export en PDF ou image</div>
+            </div>
+
+            <div class="mode-toggle">
+                <span>Mode :</span>
+                <button id="mode-guided-btn" class="active" type="button">Guidé</button>
+                <button id="mode-free-btn" type="button">Libre</button>
+            </div>
+
+            <div id="guided-mode">
+                <div class="guided-step">
+                    <div class="guided-step-title">Pour qui est ce portfolio ?</div>
+                    <div class="guided-options" id="guided-for">
+                        <button class="guided-option-btn" type="button">Pour un membre de ma famille</button>
+                        <button class="guided-option-btn" type="button">Pour un ami</button>
+                        <button class="guided-option-btn" type="button">Pour un couple</button>
+                        <button class="guided-option-btn" type="button">Pour un groupe</button>
+                        <button class="guided-option-btn" type="button">Pour moi-même</button>
+                    </div>
+                </div>
+
+                <div class="guided-step">
+                    <div class="guided-step-title">Quel ton veux-tu donner ?</div>
+                    <div class="guided-options" id="guided-tone">
+                        <button class="guided-option-btn" type="button">Joyeux</button>
+                        <button class="guided-option-btn" type="button">Émouvant</button>
+                        <button class="guided-option-btn" type="button">Nostalgique</button>
+                        <button class="guided-option-btn" type="button">Humoristique</button>
+                        <button class="guided-option-btn" type="button">Un peu de tout</button>
+                    </div>
+                </div>
+
+                <div class="guided-step">
+                    <div class="guided-step-title">Tu veux surtout :</div>
+                    <div class="guided-options" id="guided-types">
+                        <button class="guided-option-btn" type="button">Des Photos</button>
+                        <button class="guided-option-btn" type="button">Des Messages</button>
+                        <button class="guided-option-btn" type="button">Des Liens de vidéos</button>
+                        <button class="guided-option-btn" type="button">Un mélange de tout</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fresque-title">Titre du portfolio</label>
+                <input id="fresque-title" type="text" placeholder="Ex : Nos souvenirs pour toi, Une année de moments précieux…">
+            </div>
+
+            <div class="form-group">
+                <label for="fresque-subtitle">Sous-titre (optionnel)</label>
+                <input id="fresque-subtitle" type="text" placeholder="Un petit mot doux pour résumer le portfolio">
+            </div>
+
+            <hr style="border:none;border-top:1px solid #e0e7e1;margin:10px 0 12px;">
+
+            <h3 style="margin:0 0 6px;font-size:15px;">Ajouter un élément</h3>
+            <p class="small-hint">Ajoute des photos, des messages ou des liens de vidéos. L'application les organisera dans le portfolio.</p>
+
+            <div class="type-row">
+                <button class="type-btn active" data-type="photo" type="button">📷 Photo</button>
+                <button class="type-btn" data-type="message" type="button">💬 Message</button>
+                <button class="type-btn" data-type="video" type="button">🎞️ Lien vidéo</button>
+            </div>
+
+            <div class="form-group">
+                <label for="item-date">Date (optionnelle)</label>
+                <input id="item-date" type="date">
+            </div>
+
+            <div class="form-group" id="photo-group">
+                <label for="item-photo">Photo</label>
+                <input id="item-photo" type="file" accept="image/*">
+                <div class="small-hint">La photo reste dans ton navigateur, elle n'est pas envoyée sur un serveur.</div>
+            </div>
+
+            <div class="form-group" id="message-group">
+                <label for="item-message">Message</label>
+                <textarea id="item-message" placeholder="Un souvenir, une anecdote, un mot doux…"></textarea>
+            </div>
+
+            <div class="form-group" id="video-group">
+                <label for="item-video">Lien vidéo (YouTube, etc.)</label>
+                <input id="item-video" type="url" placeholder="https://…">
+            </div>
+
+            <div class="form-group">
+                <label for="item-author">De la part de (optionnel)</label>
+                <input id="item-author" type="text" placeholder="Prénom, surnom, famille…">
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-primary" id="add-item-btn" type="button">Ajouter au portfolio</button>
+                <button class="btn btn-ghost" id="clear-form-btn" type="button">Effacer le formulaire</button>
+            </div>
+
+            <div class="items-list" id="items-list"></div>
+
+            <hr style="border:none;border-top:1px solid #e0e7e1;margin:12px 0 10px;">
+
+            <h3 style="margin:0 0 6px;font-size:15px;">Option : petit message pour le futur</h3>
+            <p class="small-hint">Tu peux ajouter un message “capsule temporelle” qui apparaîtra à la fin du portfolio.</p>
+
+            <div class="form-group">
+                <label for="capsule-message">Message pour plus tard (optionnel)</label>
+                <textarea id="capsule-message" placeholder="Un mot pour dans un an, pour quelqu'un, ou pour toi-même…"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="capsule-date">Date symbolique (optionnelle)</label>
+                <input id="capsule-date" type="date">
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="generate-btn" type="button">2. Générer le portfolio</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="preview-header">
+                <div>
+                    <h2>2. Aperçu de ton portfolio</h2>
+                    <p>Quand tu es satisfait, tu peux l'imprimer en PDF, l'exporter en image ou le partager.</p>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
+                    <select class="theme-select" id="theme-select">
+                        <option value="nature">Thème nature</option>
+                        <option value="soft">Thème doux</option>
+                        <option value="night">Thème nuit</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="fresque-wrapper" id="fresque-wrapper">
+                <div class="fresque-title" id="preview-title">Ton portfolio apparaîtra ici</div>
+                <div class="fresque-subtitle" id="preview-subtitle">Ajoute des éléments à gauche puis clique sur “Générer le portfolio”.</div>
+                <div class="fresque-grid" id="fresque-grid"></div>
+                <div class="capsule-note" id="capsule-preview" style="display:none;"></div>
+            </div>
+
+            <div class="btn-row" style="margin-top:12px;">
+                <button class="btn btn-primary" id="print-btn" type="button">Imprimer / PDF</button>
+                <button class="btn btn-secondary" id="export-png-btn" type="button">Exporter en image (PNG)</button>
+                <button class="btn btn-secondary" id="reset-btn" type="button">Tout recommencer</button>
+            </div>
+
+            <div class="footer-note">
+                Astuce : après génération, tu peux utiliser “Imprimer” pour créer un PDF et l'envoyer par mail ou messagerie.
+            </div>
+            <div class="export-note">
+                L'export en image crée une capture nette du portfolio, pratique pour l'envoyer par message.
+            </div>
+        </section>
+    </main>
+</div>
+
+<div class="about-overlay" id="about-overlay">
+    <div class="about-card">
+        <h3>À propos de LifeCapsule Atlas</h3>
+        <p>LifeCapsule Atlas est un outil simple pour créer des portfolios de souvenirs avec photos, messages et liens de vidéos.</p>
+        <p>Tout se fait sur ton appareil, sans compte ni cloud. Tu peux l'utiliser pour un anniversaire, une famille, une amitié, une année entière…</p>
+        <p><strong>Créé avec 🌿 par chachatgamer &amp; TheCoffeeCoder</strong></p>
+        <div class="about-card-footer">
+            Tu peux imprimer ton portfolio, l'exporter en image ou simplement le garder comme capsule de souvenirs.
+        </div>
+        <div class="about-close-row">
+            <button class="about-close-btn" id="about-close-btn" type="button">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- html2canvas pour l'export PNG -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+    // Créé avec 🌿 par chachatgamer & TheCoffeeCoder
+
+    (function() {
+        const modeGuidedBtn = document.getElementById('mode-guided-btn');
+        const modeFreeBtn = document.getElementById('mode-free-btn');
+        const guidedMode = document.getElementById('guided-mode');
+
+        const guidedFor = document.getElementById('guided-for');
+        const guidedTone = document.getElementById('guided-tone');
+        const guidedTypes = document.getElementById('guided-types');
+
+        const typeButtons = document.querySelectorAll('.type-btn');
+        const photoGroup = document.getElementById('photo-group');
+        const messageGroup = document.getElementById('message-group');
+        const videoGroup = document.getElementById('video-group');
+
+        const itemDate = document.getElementById('item-date');
+        const itemPhoto = document.getElementById('item-photo');
+        const itemMessage = document.getElementById('item-message');
+        const itemVideo = document.getElementById('item-video');
+        const itemAuthor = document.getElementById('item-author');
+
+        const itemsList = document.getElementById('items-list');
+        const addItemBtn = document.getElementById('add-item-btn');
+        const clearFormBtn = document.getElementById('clear-form-btn');
+
+        const fresqueTitleInput = document.getElementById('fresque-title');
+        const fresqueSubtitleInput = document.getElementById('fresque-subtitle');
+
+        const capsuleMessageInput = document.getElementById('capsule-message');
+        const capsuleDateInput = document.getElementById('capsule-date');
+
+        const generateBtn = document.getElementById('generate-btn');
+        const themeSelect = document.getElementById('theme-select');
+        const fresqueWrapper = document.getElementById('fresque-wrapper');
+        const fresqueGrid = document.getElementById('fresque-grid');
+        const previewTitle = document.getElementById('preview-title');
+        const previewSubtitle = document.getElementById('preview-subtitle');
+        const capsulePreview = document.getElementById('capsule-preview');
+
+        const printBtn = document.getElementById('print-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const exportPngBtn = document.getElementById('export-png-btn');
+
+        const contrastToggle = document.getElementById('contrast-toggle');
+        const fontSelect = document.getElementById('font-select');
+
+        const aboutBtn = document.getElementById('about-btn');
+        const aboutOverlay = document.getElementById('about-overlay');
+        const aboutCloseBtn = document.getElementById('about-close-btn');
+
+        let currentType = 'photo';
+        let items = [];
+
+        const STORAGE_KEY = 'lifecapsule_atlas_state_v1';
+
+        function setModeGuided(active) {
+            if (active) {
+                modeGuidedBtn.classList.add('active');
+                modeFreeBtn.classList.remove('active');
+                guidedMode.style.display = 'block';
+            } else {
+                modeGuidedBtn.classList.remove('active');
+                modeFreeBtn.classList.add('active');
+                guidedMode.style.display = 'none';
+            }
+            saveState();
+        }
+
+        modeGuidedBtn.addEventListener('click', function() {
+            setModeGuided(true);
+        });
+
+        modeFreeBtn.addEventListener('click', function() {
+            setModeGuided(false);
+        });
+
+        function setupGuidedGroup(container, onSelect) {
+            const buttons = container.querySelectorAll('.guided-option-btn');
+            buttons.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    buttons.forEach(function(b) { b.classList.remove('selected'); });
+                    btn.classList.add('selected');
+                    if (onSelect) onSelect(btn.textContent.trim());
+                    saveState();
+                });
+            });
+        }
+
+        setupGuidedGroup(guidedFor, function(text) {
+            if (!fresqueTitleInput.value.trim()) {
+                if (text === 'Pour un membre de ma famille') {
+                    fresqueTitleInput.value = 'Un portfolio pour la famille';
+                } else if (text === 'Pour un ami') {
+                    fresqueTitleInput.value = 'Un portfolio pour un ami précieux';
+                } else if (text === 'Pour un couple') {
+                    fresqueTitleInput.value = 'Notre histoire à deux';
+                } else if (text === 'Pour un groupe') {
+                    fresqueTitleInput.value = 'Nos souvenirs ensemble';
+                } else if (text === 'Pour moi-même') {
+                    fresqueTitleInput.value = 'Mon portfolio de souvenirs';
+                }
+            }
+            renderFresque();
+        });
+
+        setupGuidedGroup(guidedTone, function(text) {
+            if (!fresqueSubtitleInput.value.trim()) {
+                if (text === 'Joyeux') {
+                    fresqueSubtitleInput.value = 'Un portfolio plein de sourires et de moments lumineux.';
+                } else if (text === 'Émouvant') {
+                    fresqueSubtitleInput.value = 'Des souvenirs qui touchent le cœur.';
+                } else if (text === 'Nostalgique') {
+                    fresqueSubtitleInput.value = 'Un regard tendre sur le passé.';
+                } else if (text === 'Humoristique') {
+                    fresqueSubtitleInput.value = 'Les moments qui nous ont fait rire.';
+                } else if (text === 'Un peu de tout') {
+                    fresqueSubtitleInput.value = 'Un mélange de rires, d’émotions et de beaux souvenirs.';
+                }
+            }
+            renderFresque();
+        });
+
+        setupGuidedGroup(guidedTypes, function(text) {
+            if (text.indexOf('Photos') !== -1) {
+                currentType = 'photo';
+            } else if (text.indexOf('Messages') !== -1) {
+                currentType = 'message';
+            } else if (text.indexOf('Liens de vidéos') !== -1) {
+                currentType = 'video';
+            }
+            updateTypeVisibility();
+            typeButtons.forEach(function(b) {
+                b.classList.remove('active');
+                if (b.getAttribute('data-type') === currentType) {
+                    b.classList.add('active');
+                }
+            });
+            saveState();
+        });
+
+        function updateTypeVisibility() {
+            photoGroup.style.display = currentType === 'photo' ? 'block' : 'none';
+            messageGroup.style.display = currentType === 'message' ? 'block' : 'none';
+            videoGroup.style.display = currentType === 'video' ? 'block' : 'none';
+        }
+
+        typeButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                typeButtons.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                currentType = btn.getAttribute('data-type') || 'photo';
+                updateTypeVisibility();
+                saveState();
+            });
+        });
+
+        updateTypeVisibility();
+
+        function renderItemsList() {
+            itemsList.innerHTML = '';
+            if (items.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'small-hint';
+                p.textContent = "Aucun élément pour l'instant. Ajoute une photo, un message ou un lien vidéo.";
+                itemsList.appendChild(p);
+                return;
+            }
+            items.forEach(function(item, index) {
+                const div = document.createElement('div');
+                div.className = 'item-chip';
+                const label = document.createElement('span');
+                let labelText = '';
+                if (item.type === 'photo') {
+                    labelText = '📷 Photo';
+                } else if (item.type === 'message') {
+                    labelText = '💬 Message';
+                } else if (item.type === 'video') {
+                    labelText = '🎞️ Vidéo';
+                }
+                if (item.author) {
+                    labelText += ' · ' + item.author;
+                }
+                if (item.date) {
+                    labelText += ' · ' + item.date;
+                }
+                label.textContent = labelText;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '✕';
+                removeBtn.title = 'Supprimer';
+                removeBtn.addEventListener('click', function() {
+                    items.splice(index, 1);
+                    renderItemsList();
+                    renderFresque();
+                    saveState();
+                });
+                div.appendChild(label);
+                div.appendChild(removeBtn);
+                itemsList.appendChild(div);
+            });
+        }
+
+        function clearForm() {
+            itemDate.value = '';
+            itemPhoto.value = '';
+            itemMessage.value = '';
+            itemVideo.value = '';
+            itemAuthor.value = '';
+        }
+
+        clearFormBtn.addEventListener('click', function() {
+            clearForm();
+        });
+
+        addItemBtn.addEventListener('click', function() {
+            const date = itemDate.value || '';
+            const author = itemAuthor.value.trim();
+            if (currentType === 'photo') {
+                if (!itemPhoto.files || itemPhoto.files.length === 0) {
+                    alert("Merci de choisir une photo.");
+                    return;
+                }
+                const file = itemPhoto.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    items.push({
+                        type: 'photo',
+                        date: date,
+                        author: author,
+                        src: e.target.result
+                    });
+                    renderItemsList();
+                    renderFresque();
+                    clearForm();
+                    saveState();
+                };
+                reader.readAsDataURL(file);
+            } else if (currentType === 'message') {
+                const msg = itemMessage.value.trim();
+                if (!msg) {
+                    alert("Merci d'écrire un petit message.");
+                    return;
+                }
+                items.push({
+                    type: 'message',
+                    date: date,
+                    author: author,
+                    text: msg
+                });
+                renderItemsList();
+                renderFresque();
+                clearForm();
+                saveState();
+            } else if (currentType === 'video') {
+                const url = itemVideo.value.trim();
+                if (!url) {
+                    alert("Merci d'ajouter un lien vidéo.");
+                    return;
+                }
+                items.push({
+                    type: 'video',
+                    date: date,
+                    author: author,
+                    url: url
+                });
+                renderItemsList();
+                renderFresque();
+                clearForm();
+                saveState();
+            }
+        });
+
+        function applyTheme() {
+            const theme = themeSelect.value;
+            if (theme === 'nature') {
+                fresqueWrapper.style.background = 'linear-gradient(145deg, #fdfefc, #eef7f0)';
+                fresqueWrapper.style.color = '';
+            } else if (theme === 'soft') {
+                fresqueWrapper.style.background = 'linear-gradient(145deg, #fdfcfb, #e8f3ff)';
+                fresqueWrapper.style.color = '';
+            } else if (theme === 'night') {
+                fresqueWrapper.style.background = 'linear-gradient(145deg, #1f2a2a, #243437)';
+                fresqueWrapper.style.color = '#f7f3ff';
+            }
+        }
+
+        themeSelect.addEventListener('change', function() {
+            applyTheme();
+            saveState();
+        });
+
+        function renderFresque() {
+            fresqueGrid.innerHTML = '';
+            const title = fresqueTitleInput.value.trim() || "Ton portfolio de souvenirs";
+            const subtitle = fresqueSubtitleInput.value.trim() || "Ajoute des moments à gauche, puis génère ton portfolio.";
+            previewTitle.textContent = title;
+            previewSubtitle.textContent = subtitle;
+
+            items.forEach(function(item) {
+                const card = document.createElement('div');
+                card.className = 'fresque-item';
+
+                const tag = document.createElement('div');
+                tag.className = 'fresque-item-tag';
+                if (item.type === 'photo') {
+                    tag.textContent = 'Photo';
+                } else if (item.type === 'message') {
+                    tag.textContent = 'Message';
+                } else if (item.type === 'video') {
+                    tag.textContent = 'Vidéo';
+                }
+                card.appendChild(tag);
+
+                if (item.date) {
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'fresque-item-date';
+                    dateEl.textContent = item.date;
+                    card.appendChild(dateEl);
+                }
+
+                if (item.type === 'photo' && item.src) {
+                    const media = document.createElement('div');
+                    media.className = 'fresque-item-media';
+                    const img = document.createElement('img');
+                    img.src = item.src;
+                    img.alt = 'Photo du portfolio';
+                    media.appendChild(img);
+                    card.appendChild(media);
+                }
+
+                if (item.type === 'message' && item.text) {
+                    const textEl = document.createElement('div');
+                    textEl.className = 'fresque-item-text';
+                    textEl.textContent = item.text;
+                    card.appendChild(textEl);
+                }
+
+                if (item.type === 'video' && item.url) {
+                    const link = document.createElement('a');
+                    link.className = 'fresque-item-link';
+                    link.href = item.url;
+                    link.target = '_blank';
+                    link.rel = 'noopener';
+                    link.textContent = item.url;
+                    card.appendChild(link);
+                }
+
+                if (item.author) {
+                    const authorEl = document.createElement('div');
+                    authorEl.className = 'fresque-item-date';
+                    authorEl.textContent = 'De la part de ' + item.author;
+                    card.appendChild(authorEl);
+                }
+
+                fresqueGrid.appendChild(card);
+            });
+
+            const capsuleText = capsuleMessageInput.value.trim();
+            const capsuleDate = capsuleDateInput.value;
+            if (capsuleText || capsuleDate) {
+                capsulePreview.style.display = 'block';
+                let text = '';
+                if (capsuleDate) {
+                    text += 'Pour ' + capsuleDate + ' : ';
+                }
+                text += capsuleText || 'Un message pour plus tard.';
+                capsulePreview.textContent = text;
+            } else {
+                capsulePreview.style.display = 'none';
+            }
+        }
+
+        generateBtn.addEventListener('click', function() {
+            renderFresque();
+            saveState();
+        });
+
+        printBtn.addEventListener('click', function() {
+            window.print();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            if (!confirm("Tout effacer et recommencer ?")) return;
+            fresqueTitleInput.value = '';
+            fresqueSubtitleInput.value = '';
+            capsuleMessageInput.value = '';
+            capsuleDateInput.value = '';
+            items = [];
+            renderItemsList();
+            renderFresque();
+            themeSelect.value = 'nature';
+            applyTheme();
+            localStorage.removeItem(STORAGE_KEY);
+        });
+
+        contrastToggle.addEventListener('click', function() {
+            document.body.classList.toggle('high-contrast');
+            saveState();
+        });
+
+        fontSelect.addEventListener('change', function() {
+            const value = fontSelect.value;
+            document.body.classList.remove('font-classic', 'font-large', 'font-hand');
+            if (value === 'classic') {
+                document.body.classList.add('font-classic');
+            } else if (value === 'large') {
+                document.body.classList.add('font-large');
+            } else if (value === 'hand') {
+                document.body.classList.add('font-hand');
+            }
+            saveState();
+        });
+
+        aboutBtn.addEventListener('click', function() {
+            aboutOverlay.classList.add('active');
+        });
+
+        aboutCloseBtn.addEventListener('click', function() {
+            aboutOverlay.classList.remove('active');
+        });
+
+        aboutOverlay.addEventListener('click', function(e) {
+            if (e.target === aboutOverlay) {
+                aboutOverlay.classList.remove('active');
+            }
+        });
+
+        function saveState() {
+            try {
+                const state = {
+                    title: fresqueTitleInput.value,
+                    subtitle: fresqueSubtitleInput.value,
+                    capsuleMessage: capsuleMessageInput.value,
+                    capsuleDate: capsuleDateInput.value,
+                    items: items,
+                    theme: themeSelect.value,
+                    highContrast: document.body.classList.contains('high-contrast'),
+                    font: fontSelect.value,
+                    guidedMode: guidedMode.style.display !== 'none'
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const state = JSON.parse(raw);
+                if (!state) return;
+
+                fresqueTitleInput.value = state.title || '';
+                fresqueSubtitleInput.value = state.subtitle || '';
+                capsuleMessageInput.value = state.capsuleMessage || '';
+                capsuleDateInput.value = state.capsuleDate || '';
+
+                items = Array.isArray(state.items) ? state.items : [];
+                renderItemsList();
+
+                if (state.theme) {
+                    themeSelect.value = state.theme;
+                    applyTheme();
+                } else {
+                    applyTheme();
+                }
+
+                if (state.highContrast) {
+                    document.body.classList.add('high-contrast');
+                } else {
+                    document.body.classList.remove('high-contrast');
+                }
+
+                if (state.font) {
+                    fontSelect.value = state.font;
+                    const value = state.font;
+                    document.body.classList.remove('font-classic', 'font-large', 'font-hand');
+                    if (value === 'classic') {
+                        document.body.classList.add('font-classic');
+                    } else if (value === 'large') {
+                        document.body.classList.add('font-large');
+                    } else if (value === 'hand') {
+                        document.body.classList.add('font-hand');
+                    }
+                }
+
+                if (typeof state.guidedMode === 'boolean') {
+                    setModeGuided(state.guidedMode);
+                } else {
+                    setModeGuided(true);
+                }
+
+                renderFresque();
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        [fresqueTitleInput, fresqueSubtitleInput, capsuleMessageInput, capsuleDateInput].forEach(function(el) {
+            el.addEventListener('input', function() {
+                renderFresque();
+                saveState();
+            });
+        });
+
+        exportPngBtn.addEventListener('click', function() {
+            if (typeof html2canvas === 'undefined') {
+                alert("L'export en image n'est pas disponible.");
+                return;
+            }
+            const target = fresqueWrapper;
+            const originalScroll = target.scrollTop;
+            target.scrollTop = 0;
+            html2canvas(target, {
+                backgroundColor: null,
+                scale: 2
+            }).then(function(canvas) {
+                target.scrollTop = originalScroll;
+                const link = document.createElement('a');
+                link.download = 'lifecapsule-portfolio.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(function() {
+                target.scrollTop = originalScroll;
+                alert("Impossible de générer l'image. Réessaie avec un autre navigateur si le problème persiste.");
+            });
+        });
+
+        setModeGuided(true);
+        applyTheme();
+        renderItemsList();
+        renderFresque();
+        loadState();
+    })();
+</script>
+</body>
+</html>
