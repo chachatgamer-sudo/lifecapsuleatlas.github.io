@@ -532,17 +532,6 @@
             position: relative;
         }
 
-        .fresque-item-tag {
-            position: absolute;
-            top: 6px;
-            right: 8px;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 999px;
-            background: #f4faf5;
-            color: var(--muted);
-        }
-
         .fresque-item-date {
             font-size: 11px;
             color: var(--muted);
@@ -851,7 +840,7 @@
 
             <div class="btn-row" style="margin-top:12px;">
                 <button class="btn btn-primary" id="print-btn" type="button">Imprimer / PDF</button>
-                <button class="btn btn-secondary" id="export-png-btn" type="button">Exporter en image (PNG)</button>
+                <button class="btn btn-secondary" id="export-png-btn" type="button">Exporter en images (ZIP)</button>
                 <button class="btn btn-secondary" id="reset-btn" type="button">Tout recommencer</button>
             </div>
 
@@ -859,7 +848,7 @@
                 Astuce : après génération, tu peux utiliser “Imprimer” pour créer un PDF et l'envoyer par mail ou messagerie.
             </div>
             <div class="export-note">
-                L'export en image crée une capture nette du portfolio, pratique pour l'envoyer par message.
+                L'export en image crée plusieurs pages PNG nettes de ton portfolio, regroupées dans un fichier ZIP.
             </div>
         </section>
     </main>
@@ -882,10 +871,11 @@
 
 <!-- html2canvas pour l'export PNG -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<!-- JSZip pour créer le ZIP -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <script>
     // Créé avec 🌿 par chachatgamer & TheCoffeeCoder
-
     (function() {
         const modeGuidedBtn = document.getElementById('mode-guided-btn');
         const modeFreeBtn = document.getElementById('mode-free-btn');
@@ -1186,16 +1176,7 @@
                 const card = document.createElement('div');
                 card.className = 'fresque-item';
 
-                const tag = document.createElement('div');
-                tag.className = 'fresque-item-tag';
-                if (item.type === 'photo') {
-                    tag.textContent = 'Photo';
-                } else if (item.type === 'message') {
-                    tag.textContent = 'Message';
-                } else if (item.type === 'video') {
-                    tag.textContent = 'Vidéo';
-                }
-                card.appendChild(tag);
+                // plus de tag "Photo" / "Message" / "Vidéo" sur la carte
 
                 if (item.date) {
                     const dateEl = document.createElement('div');
@@ -1390,27 +1371,123 @@
             });
         });
 
-        exportPngBtn.addEventListener('click', function() {
+        function isMobile() {
+            return window.innerWidth <= 600;
+        }
+
+        function getGroupSize() {
+            return isMobile() ? 2 : 4;
+        }
+
+        function chunkItems(list, size) {
+            const groups = [];
+            for (let i = 0; i < list.length; i += size) {
+                groups.push(list.slice(i, i + size));
+            }
+            return groups;
+        }
+
+        exportPngBtn.addEventListener('click', async function() {
             if (typeof html2canvas === 'undefined') {
                 alert("L'export en image n'est pas disponible.");
                 return;
             }
-            const target = fresqueWrapper;
-            const originalScroll = target.scrollTop;
-            target.scrollTop = 0;
-            html2canvas(target, {
-                backgroundColor: null,
-                scale: 2
-            }).then(function(canvas) {
-                target.scrollTop = originalScroll;
+            if (typeof JSZip === 'undefined') {
+                alert("La bibliothèque JSZip n'est pas disponible.");
+                return;
+            }
+
+            if (!items.length) {
+                alert("Aucun élément à exporter.");
+                return;
+            }
+
+            const groupSize = getGroupSize();
+            const groups = chunkItems(items, groupSize);
+            const originalItems = items.slice();
+            const zip = new JSZip();
+
+            for (let i = 0; i < groups.length; i++) {
+                items = groups[i];
+                renderFresque();
+
+                const exportContainer = document.createElement('div');
+                exportContainer.style.position = 'fixed';
+                exportContainer.style.left = '-9999px';
+                exportContainer.style.top = '0';
+                exportContainer.style.background = '#ffffff';
+                exportContainer.style.padding = '24px';
+                exportContainer.style.borderRadius = '16px';
+                exportContainer.style.boxShadow = '0 0 0 1px #e0e0e0';
+                exportContainer.style.display = 'inline-block';
+                exportContainer.style.maxWidth = '900px';
+
+                const titleEl = document.createElement('div');
+                titleEl.textContent = fresqueTitleInput.value.trim() || 'Portfolio de souvenirs';
+                titleEl.style.fontSize = '18px';
+                titleEl.style.fontWeight = '600';
+                titleEl.style.textAlign = 'center';
+                titleEl.style.marginBottom = '8px';
+
+                const subtitleEl = document.createElement('div');
+                subtitleEl.textContent = fresqueSubtitleInput.value.trim() || '';
+                subtitleEl.style.fontSize = '12px';
+                subtitleEl.style.color = '#666';
+                subtitleEl.style.textAlign = 'center';
+                subtitleEl.style.marginBottom = '12px';
+
+                const cloneWrapper = fresqueWrapper.cloneNode(true);
+                cloneWrapper.style.maxHeight = 'none';
+                cloneWrapper.style.overflow = 'visible';
+
+                const pageEl = document.createElement('div');
+                pageEl.textContent = 'Page ' + (i + 1) + ' / ' + groups.length;
+                pageEl.style.fontSize = '11px';
+                pageEl.style.color = '#777';
+                pageEl.style.textAlign = 'center';
+                pageEl.style.marginTop = '10px';
+
+                exportContainer.appendChild(titleEl);
+                if (subtitleEl.textContent) {
+                    exportContainer.appendChild(subtitleEl);
+                }
+                exportContainer.appendChild(cloneWrapper);
+                exportContainer.appendChild(pageEl);
+
+                document.body.appendChild(exportContainer);
+
+                try {
+                    const canvas = await html2canvas(exportContainer, {
+                        backgroundColor: '#ffffff',
+                        scale: 2
+                    });
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const base64 = dataUrl.split(',')[1];
+                    zip.file('portfolio-page-' + (i + 1) + '.png', base64, { base64: true });
+                } catch (e) {
+                    console.error(e);
+                    alert("Erreur lors de la génération d'une image.");
+                } finally {
+                    document.body.removeChild(exportContainer);
+                }
+            }
+
+            items = originalItems;
+            renderFresque();
+
+            try {
+                const content = await zip.generateAsync({ type: 'blob' });
                 const link = document.createElement('a');
-                link.download = 'lifecapsule-portfolio.png';
-                link.href = canvas.toDataURL('image/png');
+                link.href = URL.createObjectURL(content);
+                link.download = 'portfolio-pages.zip';
+                document.body.appendChild(link);
                 link.click();
-            }).catch(function() {
-                target.scrollTop = originalScroll;
-                alert("Impossible de générer l'image. Réessaie avec un autre navigateur si le problème persiste.");
-            });
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+            } catch (e) {
+                console.error(e);
+                alert("Impossible de créer le fichier ZIP.");
+            }
         });
 
         setModeGuided(true);
@@ -1420,8 +1497,5 @@
         loadState();
     })();
 </script>
-</body>
-</html>
-
 </body>
 </html>
