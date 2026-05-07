@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>LifeCapsule Atlas – Fresques de souvenirs</title>
+    <title>LifeCapsule Atlas – Portfolio de souvenirs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon 🌿 en SVG inline -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' font-size='48'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
@@ -605,10 +605,11 @@
         .about-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.55);
+            background: rgba(0,0,0,0.45);
             display: none;
             align-items: center;
             justify-content: center;
+            padding: 16px;
             z-index: 1000;
         }
 
@@ -617,88 +618,55 @@
         }
 
         .about-card {
-            background: #ffffff;
-            color: #243127;
-            border-radius: 16px;
-            padding: 18px 18px 16px;
             max-width: 420px;
-            width: 90%;
-            box-shadow: 0 18px 40px rgba(0,0,0,0.35);
-            border: 1px solid #e0ebdf;
-        }
-
-        body.high-contrast .about-card {
-            background: #000;
-            color: #fff;
-            border-color: #fff;
-        }
-
-        .about-card h3 {
-            margin: 0 0 8px;
-            font-size: 18px;
-        }
-
-        .about-card p {
-            margin: 4px 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px 18px 14px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.25);
             font-size: 13px;
         }
 
-        .about-card-footer {
-            margin-top: 10px;
-            font-size: 11px;
+        .about-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .about-card p {
+            margin: 0 0 8px;
+            font-size: 13px;
             color: var(--muted);
         }
 
+        .about-card-footer {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text);
+        }
+
         .about-close-row {
+            margin-top: 12px;
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
         }
 
         .about-close-btn {
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 999px;
-            border: 1px solid #cfd9d1;
-            background: #f4faf5;
+            border: none;
+            background: #e7f3ea;
+            color: var(--text);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
         }
 
-        @media print {
-            body {
-                background: #ffffff;
-            }
-            header,
-            .footer-note,
-            .btn-row,
-            .items-list,
-            .form-group,
-            .pill-row,
-            .mode-toggle,
-            .guided-step,
-            .header-controls,
-            .bmc-wrapper,
-            .export-note {
-                display: none !important;
-            }
-            main {
-                grid-template-columns: 1fr;
-            }
-            .card {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-            }
-            .fresque-wrapper {
-                border: none;
-                padding: 0;
-                max-height: none;
-                overflow: visible;
-            }
+        .about-close-btn:hover {
+            background: #d7e8dd;
         }
     </style>
 </head>
-<body class="font-classic">
+<body>
 <div class="page">
     <header>
         <div class="brand">
@@ -707,49 +675,42 @@
             </div>
             <div class="brand-text">
                 <h1>LifeCapsule Atlas</h1>
-                <p>Crée une grande fresque de souvenirs pour les personnes qui comptent.</p>
+                <p>Crée un portfolio de souvenirs avec photos, messages et liens de vidéos.</p>
             </div>
         </div>
-
         <div class="header-right">
-            <div class="header-controls">
-                <button id="contrast-toggle" class="header-btn" type="button">Contraste élevé</button>
-                <select id="font-select" class="font-select">
-                    <option value="classic">Police classique</option>
-                    <option value="large">Grande lisibilité</option>
-                    <option value="hand">Manuscrite douce</option>
-                </select>
-                <button id="about-btn" class="header-btn" type="button">À propos</button>
-            </div>
             <div class="bmc-wrapper">
-                <div class="bmc-note">Chaque don est offert à <strong>TheCoffeeCoder</strong></div>
-                <a class="bmc-link" href="https://www.buymeacoffee.com/chachatgamer" target="_blank" rel="noopener" title="Votre don sera offert à TheCoffeeCoder">
-                    <span>☕</span>
-                    <span>Offrir un café</span>
+                <div class="bmc-note">Tu l'utilises pour un moment important ? Merci d'en prendre soin 💚</div>
+                <a class="bmc-link" href="https://www.buymeacoffee.com/thecoffeecoder" target="_blank" rel="noopener">
+                    <span>☕</span><span>Offrir un café</span>
                 </a>
+            </div>
+            <div class="header-controls">
+                <button class="header-btn" id="contrast-toggle" type="button">Contraste élevé</button>
+                <select class="font-select" id="font-select">
+                    <option value="classic">Police classique</option>
+                    <option value="large">Police plus grande</option>
+                    <option value="hand">Style manuscrit</option>
+                </select>
+                <button class="header-btn" id="about-btn" type="button">À propos</button>
             </div>
         </div>
     </header>
 
     <main>
         <section class="card">
-            <h2>1. Préparer ta fresque</h2>
+            <h2>1. Préparer ton portfolio</h2>
+            <p>Ajoute des éléments (photos, messages, liens de vidéos) et personnalise le titre et le ton de ton portfolio.</p>
+
             <div class="welcome-text">
-                <p><strong>Bienvenue dans LifeCapsule Atlas.</strong></p>
-                <p>Ici, tu peux créer une grande fresque de souvenirs pour ta famille, tes amis, ou quelqu’un de précieux.</p>
-                <p>Une fresque qui rassemble des photos, des mots doux, des moments importants… et qui raconte une histoire : la vôtre.</p>
-                <p>Pas de compte, pas de cloud, pas de stockage caché : tout reste sur ton appareil.</p>
-                <p>Tu peux créer une fresque pour un anniversaire, une amitié, une famille, une année entière… ou simplement pour dire : “Tu comptes pour moi.”</p>
-                <p>Et si tu veux, tu peux ajouter un petit message pour le futur — une capsule temporelle.</p>
+                <p>Tu peux l'utiliser pour un anniversaire, une surprise, un cadeau de départ, une année de souvenirs, une amitié, une famille…</p>
+                <p>Tout reste sur ton appareil. Tu peux ensuite imprimer ton portfolio, l'exporter en image ou le garder comme capsule de souvenirs.</p>
             </div>
 
             <div class="pill-row">
-                <div class="pill">Anniversaire</div>
-                <div class="pill">Famille</div>
-                <div class="pill">Amitié</div>
-                <div class="pill">Souvenirs d'une année</div>
-                <div class="pill">Mariage</div>
-                <div class="pill">Retraite</div>
+                <div class="pill">🎁 Idéal pour un cadeau personnalisé</div>
+                <div class="pill">📷 Photos + 💬 messages + 🎞️ liens vidéos</div>
+                <div class="pill">🖨️ Export en PDF ou image</div>
             </div>
 
             <div class="mode-toggle">
@@ -760,7 +721,7 @@
 
             <div id="guided-mode">
                 <div class="guided-step">
-                    <div class="guided-step-title">Étape 1 — Pour qui est cette fresque ?</div>
+                    <div class="guided-step-title">Pour qui est ce portfolio ?</div>
                     <div class="guided-options" id="guided-for">
                         <button class="guided-option-btn" type="button">Pour un membre de ma famille</button>
                         <button class="guided-option-btn" type="button">Pour un ami</button>
@@ -771,7 +732,7 @@
                 </div>
 
                 <div class="guided-step">
-                    <div class="guided-step-title">Étape 2 — Quel ton veux-tu donner ?</div>
+                    <div class="guided-step-title">Quel ton veux-tu donner ?</div>
                     <div class="guided-options" id="guided-tone">
                         <button class="guided-option-btn" type="button">Joyeux</button>
                         <button class="guided-option-btn" type="button">Émouvant</button>
@@ -782,99 +743,95 @@
                 </div>
 
                 <div class="guided-step">
-                    <div class="guided-step-title">Étape 3 — Quels types de souvenirs veux-tu ajouter ?</div>
+                    <div class="guided-step-title">Tu veux surtout :</div>
                     <div class="guided-options" id="guided-types">
-                        <button class="guided-option-btn" type="button">Photos</button>
-                        <button class="guided-option-btn" type="button">Messages</button>
-                        <button class="guided-option-btn" type="button">Liens de vidéos</button>
-                        <button class="guided-option-btn" type="button">Dates importantes</button>
-                        <button class="guided-option-btn" type="button">Petites anecdotes</button>
+                        <button class="guided-option-btn" type="button">Des Photos</button>
+                        <button class="guided-option-btn" type="button">Des Messages</button>
+                        <button class="guided-option-btn" type="button">Des Liens de vidéos</button>
+                        <button class="guided-option-btn" type="button">Un mélange de tout</button>
                     </div>
-                    <div class="small-hint">Tu pourras toujours changer d'avis ensuite.</div>
                 </div>
             </div>
 
-            <div id="common-form">
-                <div class="form-group">
-                    <label for="fresque-title">Titre de la fresque</label>
-                    <input id="fresque-title" type="text" placeholder="Ex : 60 ans de Mamie, Notre année 2024, 10 ans d'amitié…">
-                </div>
+            <div class="form-group">
+                <label for="fresque-title">Titre du portfolio</label>
+                <input id="fresque-title" type="text" placeholder="Ex : Nos souvenirs pour toi, Une année de moments précieux…">
+            </div>
 
-                <div class="form-group">
-                    <label for="fresque-subtitle">Sous-titre (optionnel)</label>
-                    <input id="fresque-subtitle" type="text" placeholder="Un petit mot doux pour résumer la fresque">
-                </div>
+            <div class="form-group">
+                <label for="fresque-subtitle">Sous-titre (optionnel)</label>
+                <input id="fresque-subtitle" type="text" placeholder="Un petit mot doux pour résumer le portfolio">
+            </div>
 
-                <hr style="border:none;border-top:1px solid #e0e7e1;margin:10px 0 12px;">
+            <hr style="border:none;border-top:1px solid #e0e7e1;margin:10px 0 12px;">
 
-                <h3 style="margin:0 0 6px;font-size:15px;">Ajouter un élément</h3>
-                <p class="small-hint">Ajoute des photos, des messages ou des liens de vidéos. L'application les organisera dans la fresque.</p>
+            <h3 style="margin:0 0 6px;font-size:15px;">Ajouter un élément</h3>
+            <p class="small-hint">Ajoute des photos, des messages ou des liens de vidéos. L'application les organisera dans le portfolio.</p>
 
-                <div class="type-row">
-                    <button class="type-btn active" data-type="photo" type="button">📷 Photo</button>
-                    <button class="type-btn" data-type="message" type="button">💬 Message</button>
-                    <button class="type-btn" data-type="video" type="button">🎞️ Lien vidéo</button>
-                </div>
+            <div class="type-row">
+                <button class="type-btn active" data-type="photo" type="button">📷 Photo</button>
+                <button class="type-btn" data-type="message" type="button">💬 Message</button>
+                <button class="type-btn" data-type="video" type="button">🎞️ Lien vidéo</button>
+            </div>
 
-                <div class="form-group">
-                    <label for="item-date">Date (optionnelle)</label>
-                    <input id="item-date" type="date">
-                </div>
+            <div class="form-group">
+                <label for="item-date">Date (optionnelle)</label>
+                <input id="item-date" type="date">
+            </div>
 
-                <div class="form-group" id="photo-group">
-                    <label for="item-photo">Photo</label>
-                    <input id="item-photo" type="file" accept="image/*">
-                    <div class="small-hint">La photo reste dans ton navigateur, elle n'est pas envoyée sur un serveur.</div>
-                </div>
+            <div class="form-group" id="photo-group">
+                <label for="item-photo">Photo</label>
+                <input id="item-photo" type="file" accept="image/*">
+                <div class="small-hint">La photo reste dans ton navigateur, elle n'est pas envoyée sur un serveur.</div>
+            </div>
 
-                <div class="form-group" id="message-group">
-                    <label for="item-message">Message</label>
-                    <textarea id="item-message" placeholder="Un souvenir, une anecdote, un mot doux…"></textarea>
-                </div>
+            <div class="form-group" id="message-group">
+                <label for="item-message">Message</label>
+                <textarea id="item-message" placeholder="Un souvenir, une anecdote, un mot doux…"></textarea>
+            </div>
 
-                <div class="form-group" id="video-group">
-                    <label for="item-video">Lien vidéo (YouTube, etc.)</label>
-                    <input id="item-video" type="url" placeholder="https://…">
-                </div>
+            <div class="form-group" id="video-group">
+                <label for="item-video">Lien vidéo (YouTube, etc.)</label>
+                <input id="item-video" type="url" placeholder="https://…">
+            </div>
 
-                <div class="form-group">
-                    <label for="item-author">De la part de (optionnel)</label>
-                    <input id="item-author" type="text" placeholder="Prénom, surnom, famille…">
-                </div>
+            <div class="form-group">
+                <label for="item-author">De la part de (optionnel)</label>
+                <input id="item-author" type="text" placeholder="Prénom, surnom, famille…">
+            </div>
 
-                <div class="btn-row">
-                    <button class="btn btn-primary" id="add-item-btn" type="button">Ajouter à la fresque</button>
-                    <button class="btn btn-ghost" id="clear-form-btn" type="button">Effacer le formulaire</button>
-                </div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="add-item-btn" type="button">Ajouter au portfolio</button>
+                <button class="btn btn-ghost" id="clear-form-btn" type="button">Effacer le formulaire</button>
+            </div>
 
-                <div class="items-list" id="items-list"></div>
+            <div class="items-list" id="items-list"></div>
 
-                <hr style="border:none;border-top:1px solid #e0e7e1;margin:12px 0 10px;">
+            <hr style="border:none;border-top:1px solid #e0e7e1;margin:12px 0 10px;">
 
-                <h3 style="margin:0 0 6px;font-size:15px;">Option : petit message pour le futur</h3>
-                <p class="small-hint">Tu peux ajouter un message “capsule temporelle” qui apparaîtra à la fin de la fresque.</p>
+            <h3 style="margin:0 0 6px;font-size:15px;">Option : petit message pour le futur</h3>
+            <p class="small-hint">Tu peux ajouter un message “capsule temporelle” qui apparaîtra à la fin du portfolio.</p>
 
-                <div class="form-group">
-                    <label for="capsule-message">Message pour plus tard (optionnel)</label>
-                    <textarea id="capsule-message" placeholder="Un mot pour dans un an, pour quelqu'un, ou pour toi-même…"></textarea>
-                </div>
+            <div class="form-group">
+                <label for="capsule-message">Message pour plus tard (optionnel)</label>
+                <textarea id="capsule-message" placeholder="Un mot pour dans un an, pour quelqu'un, ou pour toi-même…"></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label for="capsule-date">Date symbolique (optionnelle)</label>
-                    <input id="capsule-date" type="date">
-                </div>
+            <div class="form-group">
+                <label for="capsule-date">Date symbolique (optionnelle)</label>
+                <input id="capsule-date" type="date">
+            </div>
 
-                <div class="btn-row">
-                    <button class="btn btn-secondary" id="generate-btn" type="button">2. Générer la fresque</button>
-                </div>
+            <div class="btn-row">
+                <button class="btn btn-secondary" id="generate-btn" type="button">2. Générer le portfolio</button>
             </div>
         </section>
 
         <section class="card">
             <div class="preview-header">
                 <div>
-                    <h2>2. Aperçu de ta fresque</h2>
-                    <p>Quand tu es satisfait, tu peux l'imprimer en PDF, l'exporter en image ou la partager.</p>
+                    <h2>2. Aperçu de ton portfolio</h2>
+                    <p>Quand tu es satisfait, tu peux l'imprimer en PDF, l'exporter en image ou le partager.</p>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">
                     <select class="theme-select" id="theme-select">
@@ -886,8 +843,8 @@
             </div>
 
             <div class="fresque-wrapper" id="fresque-wrapper">
-                <div class="fresque-title" id="preview-title">Ta fresque apparaîtra ici</div>
-                <div class="fresque-subtitle" id="preview-subtitle">Ajoute des éléments à gauche puis clique sur “Générer la fresque”.</div>
+                <div class="fresque-title" id="preview-title">Ton portfolio apparaîtra ici</div>
+                <div class="fresque-subtitle" id="preview-subtitle">Ajoute des éléments à gauche puis clique sur “Générer le portfolio”.</div>
                 <div class="fresque-grid" id="fresque-grid"></div>
                 <div class="capsule-note" id="capsule-preview" style="display:none;"></div>
             </div>
@@ -902,7 +859,7 @@
                 Astuce : après génération, tu peux utiliser “Imprimer” pour créer un PDF et l'envoyer par mail ou messagerie.
             </div>
             <div class="export-note">
-                L'export en image crée une capture nette de la fresque, pratique pour l'envoyer par message.
+                L'export en image crée une capture nette du portfolio, pratique pour l'envoyer par message.
             </div>
         </section>
     </main>
@@ -911,11 +868,11 @@
 <div class="about-overlay" id="about-overlay">
     <div class="about-card">
         <h3>À propos de LifeCapsule Atlas</h3>
-        <p>LifeCapsule Atlas est un outil simple pour créer des fresques de souvenirs avec photos, messages et liens de vidéos.</p>
+        <p>LifeCapsule Atlas est un outil simple pour créer des portfolios de souvenirs avec photos, messages et liens de vidéos.</p>
         <p>Tout se fait sur ton appareil, sans compte ni cloud. Tu peux l'utiliser pour un anniversaire, une famille, une amitié, une année entière…</p>
         <p><strong>Créé avec 🌿 par chachatgamer &amp; TheCoffeeCoder</strong></p>
         <div class="about-card-footer">
-            Tu peux imprimer ta fresque, l'exporter en image ou simplement la garder comme capsule de souvenirs.
+            Tu peux imprimer ton portfolio, l'exporter en image ou simplement le garder comme capsule de souvenirs.
         </div>
         <div class="about-close-row">
             <button class="about-close-btn" id="about-close-btn" type="button">Fermer</button>
@@ -1019,15 +976,15 @@
         setupGuidedGroup(guidedFor, function(text) {
             if (!fresqueTitleInput.value.trim()) {
                 if (text === 'Pour un membre de ma famille') {
-                    fresqueTitleInput.value = 'Une fresque pour la famille';
+                    fresqueTitleInput.value = 'Un portfolio pour la famille';
                 } else if (text === 'Pour un ami') {
-                    fresqueTitleInput.value = 'Une fresque pour un ami précieux';
+                    fresqueTitleInput.value = 'Un portfolio pour un ami précieux';
                 } else if (text === 'Pour un couple') {
                     fresqueTitleInput.value = 'Notre histoire à deux';
                 } else if (text === 'Pour un groupe') {
                     fresqueTitleInput.value = 'Nos souvenirs ensemble';
                 } else if (text === 'Pour moi-même') {
-                    fresqueTitleInput.value = 'Ma fresque de souvenirs';
+                    fresqueTitleInput.value = 'Mon portfolio de souvenirs';
                 }
             }
             renderFresque();
@@ -1036,7 +993,7 @@
         setupGuidedGroup(guidedTone, function(text) {
             if (!fresqueSubtitleInput.value.trim()) {
                 if (text === 'Joyeux') {
-                    fresqueSubtitleInput.value = 'Une fresque pleine de sourires et de moments lumineux.';
+                    fresqueSubtitleInput.value = 'Un portfolio plein de sourires et de moments lumineux.';
                 } else if (text === 'Émouvant') {
                     fresqueSubtitleInput.value = 'Des souvenirs qui touchent le cœur.';
                 } else if (text === 'Nostalgique') {
@@ -1220,8 +1177,8 @@
 
         function renderFresque() {
             fresqueGrid.innerHTML = '';
-            const title = fresqueTitleInput.value.trim() || "Ta fresque de souvenirs";
-            const subtitle = fresqueSubtitleInput.value.trim() || "Ajoute des moments à gauche, puis génère ta fresque.";
+            const title = fresqueTitleInput.value.trim() || "Ton portfolio de souvenirs";
+            const subtitle = fresqueSubtitleInput.value.trim() || "Ajoute des moments à gauche, puis génère ton portfolio.";
             previewTitle.textContent = title;
             previewSubtitle.textContent = subtitle;
 
@@ -1252,7 +1209,7 @@
                     media.className = 'fresque-item-media';
                     const img = document.createElement('img');
                     img.src = item.src;
-                    img.alt = 'Photo de la fresque';
+                    img.alt = 'Photo du portfolio';
                     media.appendChild(img);
                     card.appendChild(media);
                 }
@@ -1447,7 +1404,7 @@
             }).then(function(canvas) {
                 target.scrollTop = originalScroll;
                 const link = document.createElement('a');
-                link.download = 'lifecapsule-fresque.png';
+                link.download = 'lifecapsule-portfolio.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             }).catch(function() {
@@ -1463,5 +1420,8 @@
         loadState();
     })();
 </script>
+</body>
+</html>
+
 </body>
 </html>
